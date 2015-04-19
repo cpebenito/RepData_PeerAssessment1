@@ -1,25 +1,186 @@
 ---
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
+title: "Peer Assessment 1"
+author: "cpebenito"
+date: "Saturday, April 18, 2015"
+output: html_document
 ---
 
+Loading the Assignment dataset into R
 
-## Loading and preprocessing the data
+```{r}
+activity <- read.csv("activity.csv")
+str(activity)
+summary(activity)
 
-
-
-## What is mean total number of steps taken per day?
-
-
-
-## What is the average daily activity pattern?
+```
 
 
+**What is mean total number of steps taken per day?**
 
-## Imputing missing values
+*1.Calculate the total number of steps taken per day*
+
+```{r calculating the number of steps}
+act2 <- aggregate(. ~ date, data = activity, FUN=sum)
+
+```
+
+*2. Make a histogram of the total number of steps taken each day*
+
+```{r, echo=FALSE}
+
+hist(act2$steps, xlab="Steps", main="Histogram of Steps per Day")
+
+```
+
+*3. Calculate and report the mean and median of the total number of steps taken per day*
+
+```{r mean and median}
+
+mean(act2$steps)
+median(act2$steps)
+
+```
+
+**What is the average daily activity pattern?**
+
+```{r}
+
+act3 <- aggregate(. ~ interval, data = activity, FUN=mean)
+
+```
+
+*Series Plot showing the avergae daily activity pattern*
+
+```{r, echo=FALSE}
+plot(act3$interval, act3$steps, type="l", xlab="Interval", ylab="Average Steps", main="Time Series of Steps per Interval")
+
+```
+
+*Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?*
+
+```{r whichmax}
+
+act4 <- subset(act3, select= -date)
+act4[which.max(act4$steps),]
+  
+```
+
+
+**Imputing missing values**
+
+```{r how many NAs?}
+
+sum(is.na(activity))
+
+
+```
+
+```{r results='hide', message=FALSE, warning=FALSE}
+if (!require(mice)) {
+  install.packages("mice", repos="http://cran.rstudio.com/bin/windows/contrib/3.2/mice_2.22.zip") 
+  require(mice)
+  library("Rcpp")
+  library("lattice")
+  library("mice")
+}
+
+```
+
+
+```{r filling missing values, echo=FALSE, results='hide'}
+fillup <- activity[c("steps", "date", "interval")]
+summary(fillup)
+set.seed(200)
+imputed <- complete(mice(fillup))
+summary(imputed)
+```
+
+*Make a histogram of the total number of steps taken each day*
+
+```{r}
+impute2 <- aggregate(. ~ date, data = imputed, FUN=sum)
+
+hist(impute2$steps, xlab="Steps", main="Histogram of Steps per Day")
+
+```
+
+*Calculate and report the mean and median total number of steps taken per day, which include imputed values*
+
+```{r}
+
+mean(impute2$steps)
+median(impute2$steps)
+
+```
+
+**What is the impact of imputing missing data on the estimates of the total daily number of steps?**
+
+```{r histograms}
+
+if (!require(ggplot2)) {
+    install.packages("ggplot2", repos="http://cran.us.r-project.org")
+    require(ggplot2)
+}
+library(ggplot2)
+set.seed(800)
+
+act2$source <- 'withNAs'
+impute2$source <- 'noNAs'
+dat <- rbind(act2, impute2)
+
+```
+  
+  In the histogram shown below, the blue lines represent the mean (solid) and median (dotted) of the dataset withNAs and the red lines represent the dataset noNAs. There was a slight increase on the values when the NAs were imputed using the MICE(Multivariate Imputation by Chained Equations) Package in R.
+ 
+ 
+```{r histogram showing difference between imputed value and original value}
+ 
+ ggplot(dat, aes(steps, fill=source)) + geom_histogram( alpha=0.5 ) +
+  geom_vline(aes(xintercept=mean(steps)), data=act2, color="blue") +
+  geom_vline(aes(xintercept=mean(steps)), data=impute2, color="red") +
+  geom_vline(aes(xintercept=median(steps)), data=act2, color="blue", 
+             linetype="dotted", size=1) +
+  geom_vline(aes(xintercept=median(steps)), data=impute2, color="red", 
+             linetype="dotted", size=1)
+```
+
+  
+```{r results comparison and rounding of values, echo = FALSE}
+  
+mean_withNA <- round(mean(act2$steps), digits = 0)
+median_withNA <- round(median(act2$steps), digits = 0)
+mean_noNA <- round(mean(impute2$steps), digits = 0)
+median_noNA <- round(median(impute2$steps), digits = 0)
+
+```
+
+Again for purposes of comparison mean(with NAs) = `r mean_withNA` while mean(no NAs) = `r mean_noNA`. On the other hand, median(with NAs) = `r median_withNA` while median(no NAs) = `r median_noNA`
 
 
 
-## Are there differences in activity patterns between weekdays and weekends?
+**Are there differences in activity patterns between weekdays and weekends?**
+
+*The time series plot below shows the activity patterns between a weekday and weekend activity.*
+
+```{r, echo=FALSE}
+## I'm sure there's a better way of classifying weekday and weekend, but this is the best I could do for now with the deadline ##
+
+imputed$date2 <- as.POSIXct(imputed$date, tz="")
+imputed$day <- weekdays(imputed$date2)
+
+imputed$dayno<- factor(imputed$day,
+                              levels = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"), labels = c(1,2,3,4,5,6,7))
+                         
+imputed$wcat <- as.integer(imputed$dayno)
+  
+imputed$weekcat <- ifelse(imputed$wcat <= 4, "weekday", "weekend")
+
+
+g <- ggplot(imputed, aes(interval, steps))
+g + geom_line() + facet_wrap( ~ weekcat, ncol = 1) + labs(title = "Activity Pattern")
+
+
+```
+
+
+
