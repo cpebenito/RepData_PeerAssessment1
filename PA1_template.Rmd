@@ -51,7 +51,7 @@ act3 <- aggregate(. ~ interval, data = activity, FUN=mean)
 
 *Series Plot showing the avergae daily activity pattern*
 
-```{r, echo=FALSE}
+```{r, echo=TRUE}
 plot(act3$interval, act3$steps, type="l", xlab="Interval", ylab="Average Steps", main="Time Series of Steps per Interval")
 
 ```
@@ -87,7 +87,7 @@ if (!require(mice)) {
 ```
 
 
-```{r filling missing values, echo=FALSE, results='hide'}
+```{r filling missing values, echo=TRUE, results='hide'}
 fillup <- activity[c("steps", "date", "interval")]
 summary(fillup)
 set.seed(200)
@@ -162,7 +162,7 @@ Again for purposes of comparison mean(with NAs) = `r mean_withNA` while mean(no 
 
 *The time series plot below shows the activity patterns between a weekday and weekend activity.*
 
-```{r, echo=FALSE}
+```{r, echo=TRUE}
 ## I'm sure there's a better way of classifying weekday and weekend, but this is the best I could do for now with the deadline ##
 
 imputed$date2 <- as.POSIXct(imputed$date, tz="")

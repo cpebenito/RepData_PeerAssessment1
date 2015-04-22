@@ -77,6 +77,11 @@ act3 <- aggregate(. ~ interval, data = activity, FUN=mean)
 
 *Series Plot showing the avergae daily activity pattern*
 
+
+```r
+plot(act3$interval, act3$steps, type="l", xlab="Interval", ylab="Average Steps", main="Time Series of Steps per Interval")
+```
+
 ![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png) 
 
 *Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?*
@@ -117,6 +122,13 @@ if (!require(mice)) {
 
 
 
+```r
+fillup <- activity[c("steps", "date", "interval")]
+summary(fillup)
+set.seed(200)
+imputed <- complete(mice(fillup))
+summary(imputed)
+```
 
 *Make a histogram of the total number of steps taken each day*
 
@@ -156,6 +168,13 @@ if (!require(ggplot2)) {
     install.packages("ggplot2", repos="http://cran.us.r-project.org")
     require(ggplot2)
 }
+```
+
+```
+## Loading required package: ggplot2
+```
+
+```r
 library(ggplot2)
 set.seed(800)
 
@@ -190,6 +209,25 @@ Again for purposes of comparison mean(with NAs) = 1.0766 &times; 10<sup>4</sup> 
 **Are there differences in activity patterns between weekdays and weekends?**
 
 *The time series plot below shows the activity patterns between a weekday and weekend activity.*
+
+
+```r
+## I'm sure there's a better way of classifying weekday and weekend, but this is the best I could do for now with the deadline ##
+
+imputed$date2 <- as.POSIXct(imputed$date, tz="")
+imputed$day <- weekdays(imputed$date2)
+
+imputed$dayno<- factor(imputed$day,
+                              levels = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"), labels = c(1,2,3,4,5,6,7))
+                         
+imputed$wcat <- as.integer(imputed$dayno)
+  
+imputed$weekcat <- ifelse(imputed$wcat <= 4, "weekday", "weekend")
+
+
+g <- ggplot(imputed, aes(interval, steps))
+g + geom_line() + facet_wrap( ~ weekcat, ncol = 1) + labs(title = "Activity Pattern")
+```
 
 ![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png) 
 
