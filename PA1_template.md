@@ -168,13 +168,6 @@ if (!require(ggplot2)) {
     install.packages("ggplot2", repos="http://cran.us.r-project.org")
     require(ggplot2)
 }
-```
-
-```
-## Loading required package: ggplot2
-```
-
-```r
 library(ggplot2)
 set.seed(800)
 
@@ -230,6 +223,41 @@ g + geom_line() + facet_wrap( ~ weekcat, ncol = 1) + labs(title = "Activity Patt
 ```
 
 ![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png) 
+
+
+
+```r
+sessionInfo()
+```
+
+```
+## R version 3.2.0 (2015-04-16)
+## Platform: x86_64-w64-mingw32/x64 (64-bit)
+## Running under: Windows 7 x64 (build 7601) Service Pack 1
+## 
+## locale:
+## [1] LC_COLLATE=English_United States.1252 
+## [2] LC_CTYPE=English_United States.1252   
+## [3] LC_MONETARY=English_United States.1252
+## [4] LC_NUMERIC=C                          
+## [5] LC_TIME=English_United States.1252    
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+## [1] knitr_1.9       ggplot2_1.0.1   mice_2.22       lattice_0.20-31
+## [5] Rcpp_0.11.5    
+## 
+## loaded via a namespace (and not attached):
+##  [1] MASS_7.3-40         munsell_0.4.2       colorspace_1.2-6   
+##  [4] stringr_0.6.2       plyr_1.8.1          tools_3.2.0        
+##  [7] nnet_7.3-9          grid_3.2.0          gtable_0.1.2       
+## [10] htmltools_0.2.6     yaml_2.1.13         digest_0.6.8       
+## [13] randomForest_4.6-10 reshape2_1.4.1      formatR_1.1        
+## [16] rpart_4.1-9         evaluate_0.6        rmarkdown_0.5.1    
+## [19] labeling_0.3        scales_0.2.4        proto_0.3-10
+```
 
 
 

@@ -183,4 +183,10 @@ g + geom_line() + facet_wrap( ~ weekcat, ncol = 1) + labs(title = "Activity Patt
 ```
 
 
+```{r adding sessionInfo}
+sessionInfo()
+
+```
+
+
 
