@@ -1,7 +1,7 @@
 ---
 title: "Peer Assessment 1"
 author: "cpebenito"
-date: "Saturday, April 18, 2015"
+date: "Saturday, May 16, 2015"
 output: html_document
 ---
 
@@ -75,7 +75,7 @@ median(act2$steps)
 act3 <- aggregate(. ~ interval, data = activity, FUN=mean)
 ```
 
-*Series Plot showing the avergae daily activity pattern*
+*Series Plot showing the average daily activity pattern*
 
 
 ```r
@@ -224,6 +224,8 @@ g + geom_line() + facet_wrap( ~ weekcat, ncol = 1) + labs(title = "Activity Patt
 
 ![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png) 
 
+**Weekday activity starts off early, while Weekend activity starts at a later time. However, Weekend activity are more continuous and extended throughout the day compared to Weekday.**
+
 
 
 ```r
@@ -246,17 +248,17 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] knitr_1.9       ggplot2_1.0.1   mice_2.22       lattice_0.20-31
+## [1] knitr_1.10.5    ggplot2_1.0.1   mice_2.22       lattice_0.20-31
 ## [5] Rcpp_0.11.5    
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] MASS_7.3-40         munsell_0.4.2       colorspace_1.2-6   
-##  [4] stringr_0.6.2       plyr_1.8.1          tools_3.2.0        
-##  [7] nnet_7.3-9          grid_3.2.0          gtable_0.1.2       
-## [10] htmltools_0.2.6     yaml_2.1.13         digest_0.6.8       
-## [13] randomForest_4.6-10 reshape2_1.4.1      formatR_1.1        
-## [16] rpart_4.1-9         evaluate_0.6        rmarkdown_0.5.1    
-## [19] labeling_0.3        scales_0.2.4        proto_0.3-10
+##  [1] randomForest_4.6-10 digest_0.6.8        MASS_7.3-40        
+##  [4] grid_3.2.0          plyr_1.8.1          gtable_0.1.2       
+##  [7] formatR_1.2         magrittr_1.5        evaluate_0.7       
+## [10] scales_0.2.4        stringi_0.4-1       reshape2_1.4.1     
+## [13] rpart_4.1-9         labeling_0.3        proto_0.3-10       
+## [16] tools_3.2.0         stringr_1.0.0       munsell_0.4.2      
+## [19] colorspace_1.2-6    nnet_7.3-9
 ```
 
 

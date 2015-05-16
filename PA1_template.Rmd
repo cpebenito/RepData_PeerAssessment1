@@ -1,7 +1,7 @@
 ---
 title: "Peer Assessment 1"
 author: "cpebenito"
-date: "Saturday, April 18, 2015"
+date: "Saturday, May 16, 2015"
 output: html_document
 ---
 
@@ -49,7 +49,7 @@ act3 <- aggregate(. ~ interval, data = activity, FUN=mean)
 
 ```
 
-*Series Plot showing the avergae daily activity pattern*
+*Series Plot showing the average daily activity pattern*
 
 ```{r, echo=TRUE}
 plot(act3$interval, act3$steps, type="l", xlab="Interval", ylab="Average Steps", main="Time Series of Steps per Interval")
@@ -181,6 +181,8 @@ g + geom_line() + facet_wrap( ~ weekcat, ncol = 1) + labs(title = "Activity Patt
 
 
 ```
+
+**Weekday activity starts off early, while Weekend activity starts at a later time. However, Weekend activity are more continuous and extended throughout the day compared to Weekday.**
 
 
 ```{r adding sessionInfo}
